@@ -266,22 +266,160 @@ function generate_do_post_meta_item( $item ) {
                         <?php
                         while ( $related_query->have_posts() ) :
                             $related_query->the_post();
+                            // Lấy thời gian đăng bài
+                            $time_diff = human_time_diff( get_the_time( 'U' ), current_time( 'timestamp' ) );
+                            // Lấy danh sách chuyên mục
+                            $post_categories = get_the_category();
+                            $views = get_post_views(get_the_ID());
                             ?>
                             <div class="related-post-item">
                                 <?php if ( has_post_thumbnail() ) : ?>
                                     <a href="<?php the_permalink(); ?>" class="related-post-thumbnail">
                                         <?php the_post_thumbnail( 'medium' ); ?>
+                                        <?php if ( !empty($post_categories) ) : ?>
+                                            <div class="post-categories">
+                                                <?php
+                                                foreach($post_categories as $category) {
+                                                    echo '<span class="category-link">' . esc_html($category->name) . '</span>';
+                                                }
+                                                ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <span class="post-time"><?php echo esc_html( $time_diff . ' qua' ); ?></span>
+                                        <span class="post-views"><i class="fa fa-eye"></i> <?php echo number_format($views); ?></span>
                                     </a>
                                 <?php endif; ?>
-                                <h3 class="related-post-title">
-                                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                </h3>
+                                <div class="related-post-content">
+                                    <h3 class="related-post-title">
+                                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                    </h3>
+                                </div>
                             </div>
                             <?php
                         endwhile;
                         wp_reset_postdata();
                         ?>
                     </div>
+                    <style>
+                        .related-posts-container {
+                            margin: 2em 0;
+                        }
+                        .related-posts-title {
+                            font-size: 1.5em;
+                            margin-bottom: 1em;
+                            padding-bottom: 0.5em;
+                            border-bottom: 1px solid #eee;
+                        }
+                        .related-posts-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                            gap: 1.5em;
+                        }
+                        .related-post-item {
+                            display: flex;
+                            flex-direction: column;
+                            background: #000;
+                            border-radius: 5px;
+                            overflow: hidden;
+                            transition: all 0.3s ease;
+                        }
+                        .related-post-thumbnail {
+                            display: block;
+                            position: relative;
+                            padding-top: 60%;
+                            overflow: hidden;
+                        }
+                        .related-post-thumbnail img {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                        .post-categories {
+                            position: absolute;
+                            top: 10px;
+                            left: 10px;
+                            z-index: 2;
+                        }
+                        .category-link {
+                            display: inline-block;
+                            background: #ff0000;
+                            color: #fff;
+                            padding: 5px 10px;
+                            margin-right: 5px;
+                            margin-bottom: 5px;
+                            border-radius: 3px;
+                            font-size: 0.8em;
+                            text-decoration: none;
+                        }
+                        .post-time {
+                            position: absolute;
+                            bottom: 10px;
+                            left: 10px;
+                            background: rgba(128, 128, 128, 0.8);
+                            color: #fff;
+                            padding: 5px 10px;
+                            border-radius: 3px;
+                            font-size: 0.8em;
+                            z-index: 2;
+                        }
+                        .post-views {
+                            position: absolute;
+                            bottom: 10px;
+                            right: 10px;
+                            background: rgba(128, 128, 128, 0.8);
+                            color: #fff;
+                            padding: 5px 10px;
+                            border-radius: 3px;
+                            font-size: 0.8em;
+                            z-index: 2;
+                        }
+                        .related-post-content {
+                            padding: 1em;
+                            background: #000;
+                        }
+                        .related-post-title {
+                            font-size: 1.1em;
+                            margin: 0;
+                            line-height: 1.4;
+                        }
+                        .related-post-title a {
+                            color: #fff;
+                            text-decoration: none;
+                        }
+                        .related-post-title a:hover {
+                            color: #007bff;
+                        }
+                        .related-post-thumbnail::after {
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 50%;
+                            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
+                            z-index: 1;
+                        }
+                        @media (max-width: 768px) {
+                            .related-posts-grid {
+                                grid-template-columns: repeat(2, 1fr);
+                                gap: 1em;
+                            }
+                            .related-post-title {
+                                font-size: 0.9em;
+                            }
+                            .category-link {
+                                font-size: 0.7em;
+                                padding: 3px 6px;
+                            }
+                            .post-time, .post-views {
+                                font-size: 0.7em;
+                                padding: 3px 6px;
+                            }
+                        }
+                    </style>
                 <?php endif;
             }
             ?>
@@ -392,6 +530,7 @@ function generate_get_footer_entry_meta_items() {
             'categories', // Đã loại bỏ categories theo code gốc
             'tags',
             'comments-link',
+            'views', // Thêm views vào đây
             'post-navigation',
             'related-posts', // Thêm related-posts vào footer meta
         )
@@ -608,3 +747,4 @@ function generate_get_read_more_aria_label() {
         )
     );
 }
+

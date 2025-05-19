@@ -1,0 +1,166 @@
+/* Featured Image Styles */
+.inside-article {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.post-image-wrapper {
+    position: relative;
+    margin-bottom: 1em;
+    background: #1b1b1b;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.featured-image {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+}
+
+.featured-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.featured-image:hover img {
+    transform: scale(1.05);
+}
+
+/* Overlay gradient for better text visibility */
+.featured-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+    z-index: 1;
+}
+
+/* Category link */
+.category-link {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #ff0000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    z-index: 2;
+}
+
+/* Post time */
+.post-time {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(128, 128, 128, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    z-index: 2;
+}
+
+/* Post views */
+.post-views {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(128, 128, 128, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    z-index: 2;
+}
+
+/* Post title */
+.entry-header {
+    padding: 15px;
+    background: #1b1b1b;
+}
+
+.entry-title {
+    font-size: 1em;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.entry-title a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.entry-title a:hover {
+    color: #ff0000;
+}
+
+/* Grid Layout */
+.generate-columns-container {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 20px !important;
+    margin: 0 0 2em 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove default margins and paddings */
+.generate-columns-container article {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+/* Hide excerpt on grid layout */
+.entry-summary {
+    display: none;
+}
+
+/* Ensure navigation is outside grid */
+.nav-links,
+.paging-navigation,
+.navigation {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    clear: both !important;
+    margin-top: 2em !important;
+    display: block !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .generate-columns-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+
+    .category-link,
+    .post-time,
+    .post-views {
+        font-size: 0.7em;
+        padding: 3px 6px;
+    }
+
+    .entry-title {
+        font-size: 0.9em;
+    }
+}
+
+/* Fix for navigation */
+.navigation.paging-navigation {
+    background: none !important;
+    padding: 0 !important;
+}
+
+/* Hide duplicate meta information */
+.entry-meta {
+    display: none !important;
+} 
